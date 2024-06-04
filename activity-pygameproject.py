@@ -9,7 +9,7 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (136, 189, 241)
-BABYBLUE = (179, 230, 255)
+BABYBLUE = (205, 252, 255)
 DRAGONFRUIT = (255, 26, 140)
 YELLOW = (255, 246, 191)
 
@@ -169,7 +169,9 @@ class Level(object):
          
         # Background image
         self.background = None
- 
+        self.score = 0
+        self.level_data = []
+
     # Update everythign on this level
     def update(self):
         """ Update everything in this level."""
@@ -179,7 +181,12 @@ class Level(object):
         # TODO: check collision between player and coin
         # TODO: kill coin when collided
         coins_collided = pg.sprite.spritecollide(self.player, self.coin_list, True)
- 
+        if coins_collided:
+            self.score += len(coins_collided)
+
+        if len(self.coin_list) == 0:
+            self.respawn_coins()
+
     def draw(self, screen):
         """ Draw everything on this level. """
  
@@ -190,7 +197,19 @@ class Level(object):
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
         self.coin_list.draw(screen)
- 
+
+        # score display
+        font = pg.font.SysFont("Arial", 22)
+        text = font.render("Score: " + str(self.score), True, DRAGONFRUIT)
+        screen.blit(text, [10, 10])
+     
+    def respawn_coins(self):
+        
+        for platform in self.level_data: 
+            coin = Coin()
+            coin.rect.x = random.randrange(platform[2], platform[2] + platform[0] - coin.rect.width)
+            coin.rect.bottom = platform[3]
+            self.coin_list.add(coin)
  
 # Create platforms for the level
 class Level_01(Level):
@@ -210,7 +229,8 @@ class Level_01(Level):
             [210, 35, 115, 250],
             [210, 20, 375, 85],
         ]
- 
+        self.level_data = level
+
         # Go through the array above and add platforms
         for platform in level:
             block = Platform(platform[0], platform[1])
@@ -219,14 +239,15 @@ class Level_01(Level):
             block.player = self.player
             self.platform_list.add(block)
 
-        # Put coins on the platforms
-        for platform in level:
-            # Range x is x-coord -> x-coord + width
-            # bottom is always the y-coord
-            coin = Coin()
-            coin.rect.x = random.randrange(platform[2], platform[2] + platform[0] - coin.rect.width)
-            coin.rect.bottom = platform[3]
-            self.coin_list.add(coin)
+        # # Put coins on the platforms
+        # for platform in level:
+        #     # Range x is x-coord -> x-coord + width
+        #     # bottom is always the y-coord
+        #     coin = Coin()
+        #     coin.rect.x = random.randrange(platform[2], platform[2] + platform[0] - coin.rect.width)
+        #     coin.rect.bottom = platform[3]
+        #     self.coin_list.add(coin)
+        self.respawn_coins()
 
  
  
