@@ -1,1 +1,1 @@
-# Pygame-Project
+# Pygame Project
