@@ -95,6 +95,7 @@ class Player(pg.sprite.Sprite):
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = SCREEN_HEIGHT - self.rect.height
+            # if we're on the ground, score clears
             self.level.score = 0
 
     def jump(self):
@@ -185,7 +186,7 @@ class Level(object):
         coins_collided = pg.sprite.spritecollide(self.player, self.coin_list, True)
         if coins_collided:
             self.score += len(coins_collided)
-
+        # respawn coin
         if len(self.coin_list) == 0:
             self.respawn_coins()
 
