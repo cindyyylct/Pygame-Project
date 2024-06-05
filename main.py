@@ -1,3 +1,7 @@
+# SKZOO Platform Jumper
+# Cindy Li
+# June 4, 2024
+
 import pygame as pg
 import random
 
@@ -324,20 +328,17 @@ def start():
         if player.rect.left < 0:
             player.rect.left = 0
  
-        # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
+        # draw on the screen
         current_level.draw(screen)
         active_sprite_list.draw(screen)
  
-        # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
  
         # Limit to 60 frames per second
         clock.tick(60)
  
         # Go ahead and update the screen with what we've drawn.
         pg.display.flip()
- 
-    # Be IDLE friendly. If you forget this line, the program will 'hang'
-    # on exit.
+        
     pg.quit()
  
 if __name__ == "__main__":
