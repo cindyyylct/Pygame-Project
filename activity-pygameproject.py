@@ -66,6 +66,7 @@ class Player(pg.sprite.Sprite):
             elif self.change_x < 0:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
+
  
         # Move up/down
         self.rect.y += self.change_y
@@ -94,7 +95,8 @@ class Player(pg.sprite.Sprite):
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = SCREEN_HEIGHT - self.rect.height
- 
+            self.level.score = 0
+
     def jump(self):
         """ Called when user hits 'jump' button. """
  
@@ -199,7 +201,7 @@ class Level(object):
         self.coin_list.draw(screen)
 
         # score display
-        font = pg.font.SysFont("Arial", 22)
+        font = pg.font.SysFont("Baskerville", 30)
         text = font.render("Score: " + str(self.score), True, DRAGONFRUIT)
         screen.blit(text, [10, 10])
      
